@@ -1,0 +1,1 @@
+F:\GitHub\sni_fivem_core_fork\artifact\FXServer.exe +exec server.cfg +set sv_enforceGameBuild 3570

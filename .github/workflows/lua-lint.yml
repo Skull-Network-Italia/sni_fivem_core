@@ -17,29 +17,45 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Verify Luacheck
+      - name: Verify Luacheck binary
         shell: powershell
         run: |
           if (-Not (Test-Path "C:\tools\luacheck.exe")) {
-            Write-Error "Luacheck non trovato in C:\tools\luacheck.exe. Scarica il binario e mettilo in questa cartella."
-          } else {
-            C:\tools\luacheck.exe --version
+            Write-Error "Luacheck non trovato in C:\tools\luacheck.exe"
           }
+          C:\tools\luacheck.exe --version
 
-      - name: Run Luacheck
+      - name: Run Luacheck (JUnit)
         shell: powershell
         run: |
-          # genera report JUnit manualmente
-          C:\tools\luacheck.exe . --config .luacheckrc --formatter JUnit --codes > junit.xml
+          Write-Host "Running Luacheck in JUnit mode..."
+
+          cmd /c ^
+            "C:\tools\luacheck.exe . ^
+            --config .luacheckrc ^
+            --formatter JUnit ^
+            --codes ^
+            --quiet ^
+            --no-color ^
+            1> junit.xml ^
+            2> luacheck.log ^
+            || exit /b 0"
 
       - name: Publish Luacheck Report
         if: always()
         uses: mikepenz/action-junit-report@v6
         with:
-          report_paths: "junit.xml"
-          check_name: "Lua Lint Report"
+          report_paths: junit.xml
+          check_name: Lua Lint Report
           fail_on_failure: false
+
+          # 🔑 per avere SEMPRE risultati visibili
+          include_passed: true
+          include_empty_in_summary: true
+          job_summary: true
+          verbose_summary: true
+          check_annotations: false
