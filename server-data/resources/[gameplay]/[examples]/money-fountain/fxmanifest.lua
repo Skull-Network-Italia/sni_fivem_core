@@ -19,4 +19,4 @@ dependencies {
     'money'
 }
 
-lua54 'yes'
+lua53 'yes'

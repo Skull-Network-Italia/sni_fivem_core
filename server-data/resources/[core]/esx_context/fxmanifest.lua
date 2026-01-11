@@ -3,8 +3,8 @@ fx_version 'bodacious'
 game 'gta5'
 author 'ESX-Framework & Brayden'
 description 'A simplistic context menu for ESX.'
-lua54 'yes'
-version '1.13.4'
+lua53 'yes'
+version '1.0.0'
 
 ui_page 'index.html'
 

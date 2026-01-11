@@ -13,4 +13,4 @@ client_script 'client.lua'
 server_script 'server.lua'
 
 --dependency 'cfx.re/playerData.v1alpha1'
-lua54 'yes'
+lua53 'yes'
