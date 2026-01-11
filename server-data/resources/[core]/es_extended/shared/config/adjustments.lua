@@ -7,7 +7,7 @@ Config.DisableAimAssist = false -- disables AIM assist (mainly on controllers)
 Config.DisableVehicleSeatShuff = false -- Disables vehicle seat shuff
 Config.DisableDisplayAmmo = false -- Disable ammunition display
 Config.EnablePVP = true -- Allow Player to player combat
-Config.EnableWantedLevel = false -- Use Normal GTA wanted Level?
+Config.EnableWantedLevel = true -- Use Normal GTA wanted Level?
 
 Config.RemoveHudComponents = {
     [1] = false, --WANTED_STARS,
@@ -35,13 +35,13 @@ Config.RemoveHudComponents = {
 }
 
 Config.Multipliers = {
-    pedDensity = 1.0,
+    pedDensity = 0.5,
     scenarioPedDensityInterior = 0.0,
-    scenarioPedDensityExterior = 1.0,
-    ambientVehicleRange = 1.0,
-    parkedVehicleDensity = 1.0,
-    randomVehicleDensity = 1.0,
-    vehicleDensity = 1.0
+    scenarioPedDensityExterior = 0.5,
+    ambientVehicleRange = 0.5,
+    parkedVehicleDensity = 0.5,
+    randomVehicleDensity = 0.5,
+    vehicleDensity = 0.5
 }
 
 -- Pattern string format
