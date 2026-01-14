@@ -1,5 +1,5 @@
 version '1.0.0'
-author 'ESX-Framework'
+author 'Skull Network Italia'
 description 'A ESX Stylised theme for the chat resource.'
 
 file 'style.css'
