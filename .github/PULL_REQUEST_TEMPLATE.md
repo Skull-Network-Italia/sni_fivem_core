@@ -112,3 +112,13 @@ Inserisci qui qualsiasi informazione utile per i reviewer:
 Discord username (if different from GitHub):  
 
 ---
+
+## 📜 Contributor License Agreement (CLA)
+
+By submitting this Pull Request, I confirm that:
+- I have read the CLA (`CLA.md`)
+- I agree to its terms
+
+❗ You must also comment the following sentence to pass CI:
+
+"I have read and agree to the CLA"
