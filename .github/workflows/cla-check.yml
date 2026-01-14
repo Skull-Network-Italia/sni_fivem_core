@@ -1,44 +1,73 @@
-name: CLA Check
-
-on:
-  pull_request:
-    types: [opened, edited, synchronize, reopened]
-
-permissions:
-  pull-requests: read
-  issues: read
-  statuses: write
-
-jobs:
-  cla-check:
-    runs-on: self-hosted
-
-    steps:
-      - name: Check CLA acceptance comment
-        shell: bash
+      - name: Check CLA acceptance (PowerShell)
+        shell: pwsh
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -e
+          $ErrorActionPreference = "Stop"
 
-          CLA_PHRASE="I have read and agree to the CLA"
-          PR_NUMBER="${{ github.event.pull_request.number }}"
-          REPO="${{ github.repository }}"
-          AUTHOR="${{ github.event.pull_request.user.login }}"
+          # ================================
+          # Configuration
+          # ================================
+          $CLA_PHRASE = "I have read and agree to the CLA"
+          $REPO       = "${{ github.repository }}"
+          $PR_NUMBER  = "${{ github.event.pull_request.number }}"
+          $AUTHOR     = "${{ github.event.pull_request.user.login }}"
 
-          COMMENTS=$(curl -s \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/$REPO/issues/$PR_NUMBER/comments)
+          Write-Host "Repository: $REPO"
+          Write-Host "PR Number : #$PR_NUMBER"
+          Write-Host "Author    : $AUTHOR"
 
-          if echo "$COMMENTS" | jq -e \
-            ".[] | select(.user.login == \"$AUTHOR\") | select(.body | contains(\"$CLA_PHRASE\"))" > /dev/null
-          then
-            echo "✅ CLA accepted"
-          else
-            echo "❌ CLA NOT accepted"
-            echo ""
-            echo "Please comment exactly:"
-            echo "\"I have read and agree to the CLA\""
+          # ================================
+          # GitHub API headers
+          # ================================
+          $headers = @{
+            Authorization = "Bearer $env:GITHUB_TOKEN"
+            Accept        = "application/vnd.github+json"
+            "User-Agent"  = "SNI-CLA-Check"
+          }
+
+          # ================================
+          # Fetch PR comments
+          # ================================
+          try {
+            $comments = Invoke-RestMethod `
+              -Uri "https://api.github.com/repos/$REPO/issues/$PR_NUMBER/comments" `
+              -Headers $headers `
+              -Method Get
+          }
+          catch {
+            Write-Error "Failed to fetch PR comments from GitHub API."
+            throw
+          }
+
+          # ================================
+          # Validate CLA acceptance
+          # ================================
+          $accepted = $false
+
+          foreach ($comment in $comments) {
+            if ($comment.user.login -eq $AUTHOR -and
+                $comment.body -match [regex]::Escape($CLA_PHRASE)) {
+              $accepted = $true
+              break
+            }
+          }
+
+          if (-not $accepted) {
+            Write-Error @"
+❌ CLA NOT ACCEPTED
+
+The contributor must comment the following EXACT sentence
+on this Pull Request:
+
+I have read and agree to the CLA
+
+CLA document:
+https://github.com/$REPO/blob/main/CLA.md
+
+Once the comment is added, this check will automatically pass.
+"@
             exit 1
-          fi
+          }
+
+          Write-Host "✅ CLA accepted"
