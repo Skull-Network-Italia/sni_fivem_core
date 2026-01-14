@@ -1,0 +1,73 @@
+      - name: Check CLA acceptance (PowerShell)
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $ErrorActionPreference = "Stop"
+
+          # ================================
+          # Configuration
+          # ================================
+          $CLA_PHRASE = "I have read and agree to the CLA"
+          $REPO       = "${{ github.repository }}"
+          $PR_NUMBER  = "${{ github.event.pull_request.number }}"
+          $AUTHOR     = "${{ github.event.pull_request.user.login }}"
+
+          Write-Host "Repository: $REPO"
+          Write-Host "PR Number : #$PR_NUMBER"
+          Write-Host "Author    : $AUTHOR"
+
+          # ================================
+          # GitHub API headers
+          # ================================
+          $headers = @{
+            Authorization = "Bearer $env:GITHUB_TOKEN"
+            Accept        = "application/vnd.github+json"
+            "User-Agent"  = "SNI-CLA-Check"
+          }
+
+          # ================================
+          # Fetch PR comments
+          # ================================
+          try {
+            $comments = Invoke-RestMethod `
+              -Uri "https://api.github.com/repos/$REPO/issues/$PR_NUMBER/comments" `
+              -Headers $headers `
+              -Method Get
+          }
+          catch {
+            Write-Error "Failed to fetch PR comments from GitHub API."
+            throw
+          }
+
+          # ================================
+          # Validate CLA acceptance
+          # ================================
+          $accepted = $false
+
+          foreach ($comment in $comments) {
+            if ($comment.user.login -eq $AUTHOR -and
+                $comment.body -match [regex]::Escape($CLA_PHRASE)) {
+              $accepted = $true
+              break
+            }
+          }
+
+          if (-not $accepted) {
+            Write-Error @"
+❌ CLA NOT ACCEPTED
+
+The contributor must comment the following EXACT sentence
+on this Pull Request:
+
+I have read and agree to the CLA
+
+CLA document:
+https://github.com/$REPO/blob/main/CLA.md
+
+Once the comment is added, this check will automatically pass.
+"@
+            exit 1
+          }
+
+          Write-Host "✅ CLA accepted"

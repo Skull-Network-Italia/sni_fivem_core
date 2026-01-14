@@ -1,7 +1,7 @@
 fx_version 'adamant'
 
 game 'gta5'
-author 'ESX-Framework'
+author 'Skull Network Italia'
 description 'Allows resources to Run tasks at specific intervals.'
 lua53 'yes'
 version '1.0.0'

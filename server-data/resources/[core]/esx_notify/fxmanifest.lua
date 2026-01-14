@@ -3,7 +3,7 @@ fx_version 'adamant'
 lua53 'yes'
 game 'gta5'
 version '1.0.0'
-author 'ESX-Framework'
+author 'Skull Network Italia'
 description 'A beautiful and simple NUI notification system for ESX'
 
 shared_script '@es_extended/imports.lua'

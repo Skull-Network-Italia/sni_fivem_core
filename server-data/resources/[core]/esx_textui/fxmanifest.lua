@@ -1,7 +1,7 @@
 fx_version 'adamant'
 
 game 'gta5'
-author 'ESX-Framework'
+author 'Skull Network Italia'
 description 'A beautiful and simple Persistent Notification system for ESX.'
 version '1.0.0'
 lua53 'yes'

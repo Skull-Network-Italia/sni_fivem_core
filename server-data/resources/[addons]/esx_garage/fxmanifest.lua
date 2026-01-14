@@ -1,13 +1,12 @@
 fx_version 'cerulean'
 game 'gta5'
 
-author 'ESX-Framework'
+author 'Skull Network Italia'
 description 'Allows Players to Store & Retrieve their vehicles'
 
-version '1.0'
-legacyversion '1.13.4'
+version '1.0.0'
 
-lua54 'yes'
+lua53 'yes'
 
 shared_script '@es_extended/imports.lua'
 
