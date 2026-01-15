@@ -1,3 +1,23 @@
+name: CLA Check
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+
+permissions:
+  pull-requests: read
+  issues: read
+
+jobs:
+  cla-check:
+    name: Verify Contributor License Agreement
+    runs-on: self-hosted
+
+    steps:
       - name: Check CLA acceptance (PowerShell)
         shell: pwsh
         env:
@@ -54,19 +74,15 @@
           }
 
           if (-not $accepted) {
-            Write-Error @"
-❌ CLA NOT ACCEPTED
-
-The contributor must comment the following EXACT sentence
-on this Pull Request:
-
-I have read and agree to the CLA
-
-CLA document:
-https://github.com/$REPO/blob/main/CLA.md
-
-Once the comment is added, this check will automatically pass.
-"@
+            Write-Error (
+              "❌ CLA NOT ACCEPTED`n`n" +
+              "The contributor must comment the following EXACT sentence`n" +
+              "on this Pull Request:`n`n" +
+              "I have read and agree to the CLA`n`n" +
+              "CLA document:`n" +
+              "https://github.com/$REPO/blob/main/CLA.md`n`n" +
+              "Once the comment is added, this check will automatically pass."
+            )
             exit 1
           }
 
