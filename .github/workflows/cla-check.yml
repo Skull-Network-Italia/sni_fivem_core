@@ -1,7 +1,7 @@
 name: CLA Check
 
 on:
-  pull_request:
+  pull_request_target:
     types:
       - opened
       - edited
@@ -65,11 +65,10 @@ jobs:
           }
 
           # =====================================
-          # Fetch PR reviews (if not accepted yet)
+          # Fetch PR reviews (fallback)
           # =====================================
           if (-not $accepted) {
-            Write-Host "CLA not found in comments, checking PR reviews..."
-
+            Write-Host "Checking PR reviews..."
             $reviews = Invoke-RestMethod `
               -Uri "https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/reviews" `
               -Headers $headers `
@@ -97,15 +96,13 @@ jobs:
           on this Pull Request (comment or review):
 
 
-          📄 **CLA document:**
+          📄 **CLA document**
           https://github.com/$REPO/blob/main/CLA.md
 
           Once the comment is added, this check will pass automatically.
           "@
 
-            $payload = @{
-              body = $commentBody
-            } | ConvertTo-Json -Depth 3
+            $payload = @{ body = $commentBody } | ConvertTo-Json
 
             Invoke-RestMethod `
               -Uri "https://api.github.com/repos/$REPO/issues/$PR_NUMBER/comments" `
