@@ -66,11 +66,9 @@ jobs:
           $accepted = $false
 
           foreach ($comment in $comments) {
-            if ($comment.user.login -eq $AUTHOR -and
-                $comment.body -match [regex]::Escape($CLA_PHRASE)) {
-              $accepted = $true
-              break
-            }
+              if ($comment.body -match "(?i)I have read and agree to the CLA") {
+            $accepted = $true
+            break
           }
 
           if (-not $accepted) {
