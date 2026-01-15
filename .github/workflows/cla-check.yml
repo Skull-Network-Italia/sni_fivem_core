@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Check CLA acceptance (PowerShell)
-        shell: pwsh
+        shell: powershell
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
