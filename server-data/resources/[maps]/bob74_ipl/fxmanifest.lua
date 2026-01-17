@@ -5,7 +5,7 @@ author("Bob_74")
 description("Load and customize your map")
 version("1.0.0")
 
-lua53("yes")
+lua54("yes")
 
 client_scripts({
     "lib/*.lua",

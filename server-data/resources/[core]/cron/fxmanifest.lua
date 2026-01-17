@@ -1,9 +1,9 @@
-fx_version 'adamant'
+fx_version("adamant")
 
-game 'gta5'
-author 'Skull Network Italia'
-description 'Allows resources to Run tasks at specific intervals.'
-lua53 'yes'
-version '1.0.0'
+game("gta5")
+author("Skull Network Italia")
+description("Allows resources to Run tasks at specific intervals.")
+lua54("yes")
+version("1.0.0")
 
-server_script 'server/main.lua'
+server_script("server/main.lua")

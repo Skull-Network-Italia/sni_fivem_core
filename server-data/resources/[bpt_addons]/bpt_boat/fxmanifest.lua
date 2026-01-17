@@ -3,7 +3,7 @@ fx_version("adamant")
 game("gta5")
 
 description("Allows players to buy a boat")
-lua53("yes")
+lua54("yes")
 version("1.0.0")
 
 shared_script("@es_extended/imports.lua")
