@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   lint:
-    name: Luacheck (Windows Self-Hosted)
+    name: Lua Quality (Windows Self-Hosted)
     runs-on: self-hosted
 
     steps:
@@ -21,18 +21,38 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Verify Luacheck binary
+      # ------------------------
+      # VERIFY BINARIES
+      # ------------------------
+      - name: Verify tools
         shell: powershell
         run: |
           if (-Not (Test-Path "C:\tools\luacheck.exe")) {
-            Write-Error "Luacheck non trovato in C:\tools\luacheck.exe"
+            Write-Error "luacheck.exe not found"
           }
-          C:\tools\luacheck.exe --version
+          if (-Not (Test-Path "C:\tools\stylua.exe")) {
+            Write-Error "stylua.exe not found"
+          }
 
+          C:\tools\luacheck.exe --version
+          C:\tools\stylua.exe --version
+
+      # ------------------------
+      # STYLUA (FORMAT CHECK)
+      # ------------------------
+      - name: Stylua format check
+        shell: powershell
+        run: |
+          Write-Host "Running Stylua (check only)..."
+          C:\tools\stylua.exe . --check
+
+      # ------------------------
+      # LUACHECK (JUnit)
+      # ------------------------
       - name: Run Luacheck (JUnit)
         shell: powershell
         run: |
-          Write-Host "Running Luacheck in JUnit mode..."
+          Write-Host "Running Luacheck..."
 
           cmd /c ^
             "C:\tools\luacheck.exe . ^
@@ -45,6 +65,15 @@ jobs:
             2> luacheck.log ^
             || exit /b 0"
 
+      # ------------------------
+      # FIVEM LINT
+      # ------------------------
+      - name: FiveM Lua Lint
+        uses: iLLeniumStudios/fivem-lua-lint-action@v2
+
+      # ------------------------
+      # PUBLISH REPORT
+      # ------------------------
       - name: Publish Luacheck Report
         if: always()
         uses: mikepenz/action-junit-report@v6
@@ -53,7 +82,6 @@ jobs:
           check_name: Lua Lint Report
           fail_on_failure: false
 
-          # 🔑 per avere SEMPRE risultati visibili
           include_passed: true
           include_empty_in_summary: true
           job_summary: true
