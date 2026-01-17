@@ -3,7 +3,7 @@ Config = {
 	DrawMarker = 10,
 	Locale = GetConvar('esx:locale', 'it'),
 	EnablePeds = true,
-	AtmModels = {`prop_fleeca_atm`, `prop_atm_01`, `prop_atm_02`, `prop_atm_03`},
+	AtmModels = { `prop_fleeca_atm`, `prop_atm_01`, `prop_atm_02`, `prop_atm_03` },
 	Banks = {
 		{
 			Position = vector4(149.91, -1040.74, 29.374, 160),
@@ -129,4 +129,3 @@ Config = {
 		}
 	}
 }
-
