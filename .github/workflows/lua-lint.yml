@@ -4,7 +4,6 @@ on:
   push:
     branches: [ "main", "dev" ]
   pull_request:
-    branches: [ "*" ]
 
 permissions:
   contents: read
@@ -36,14 +35,26 @@ jobs:
           C:\tools\stylua.exe --version
 
       # ------------------------
-      # STYLUA (CHECK ONLY, NON BLOCCANTE)
+      # STYLUA (CHECK ONLY → SUMMARY)
       # ------------------------
-      - name: Stylua format check
+      - name: Run Stylua (check only)
         shell: powershell
         continue-on-error: true
         run: |
           Write-Host "Running Stylua (check only)..."
-          C:\tools\stylua.exe . --check
+
+          C:\tools\stylua.exe . --check --output-format json `
+            > stylua-report.json 2> stylua.log || exit 0
+
+          if (Test-Path stylua-report.json) {
+            $count = (Get-Content stylua-report.json | ConvertFrom-Json).Count
+            Add-Content $env:GITHUB_STEP_SUMMARY "## ✨ Stylua Format Check"
+            Add-Content $env:GITHUB_STEP_SUMMARY ""
+            Add-Content $env:GITHUB_STEP_SUMMARY "- Issues found: **$count**"
+            Add-Content $env:GITHUB_STEP_SUMMARY "- Tool: Stylua 2.3.1"
+            Add-Content $env:GITHUB_STEP_SUMMARY ""
+            Add-Content $env:GITHUB_STEP_SUMMARY "_Job does not fail on formatting issues_"
+          }
 
       # ------------------------
       # LUACHECK (JUnit)
@@ -65,7 +76,7 @@ jobs:
             || exit /b 0"
 
       # ------------------------
-      # PUBLISH REPORT
+      # PUBLISH LUACHECK REPORT
       # ------------------------
       - name: Publish Luacheck Report
         if: always()
@@ -78,4 +89,4 @@ jobs:
           include_empty_in_summary: true
           job_summary: true
           verbose_summary: true
-          check_annotations: false
+          check_annotations: true
