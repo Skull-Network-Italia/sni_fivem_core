@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Skull Network Italia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="loadscreen">
+
+    <video id="bg-video" autoplay muted loop playsinline preload="auto">
+        <source src="assets/intro.mp4" type="video/mp4">
+    </video>
+
+    <!-- AUDIO SEPARATO -->
+    <audio id="bg-audio" loop preload="auto">
+        <source src="assets/intro.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="overlay"></div>
+
+    <div class="branding">
+        <h1>Skull Network Italia</h1>
+        <p>Teschi Italiani che avanzano</p>
+    </div>
+
+    <div class="controls">
+        <button id="vol-down">−</button>
+        <button id="mute">🔈</button>
+        <button id="vol-up">+</button>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
