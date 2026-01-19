@@ -3,7 +3,7 @@ name: Lua Quality (FiveM / ESX)
 on:
   push:
     branches: [ "main", "dev" ]
-  pull_request:
+  pull_request_target:
 
 permissions:
   contents: read
@@ -26,9 +26,11 @@ jobs:
         run: |
           if (-Not (Test-Path "C:\tools\luacheck.exe")) {
             Write-Error "luacheck.exe not found"
+            exit 1
           }
           if (-Not (Test-Path "C:\tools\stylua.exe")) {
             Write-Error "stylua.exe not found"
+            exit 1
           }
 
           C:\tools\luacheck.exe --version
@@ -43,17 +45,18 @@ jobs:
         run: |
           Write-Host "Running Stylua (check only)..."
 
-          C:\tools\stylua.exe . --check --output-format json `
-            > stylua-report.json 2> stylua.log || exit 0
+          C:\tools\stylua.exe . --check 2> stylua.log
+          $exitCode = $LASTEXITCODE
 
-          if (Test-Path stylua-report.json) {
-            $count = (Get-Content stylua-report.json | ConvertFrom-Json).Count
-            Add-Content $env:GITHUB_STEP_SUMMARY "## ✨ Stylua Format Check"
+          Add-Content $env:GITHUB_STEP_SUMMARY "## ✨ Stylua Format Check"
+          Add-Content $env:GITHUB_STEP_SUMMARY ""
+
+          if ($exitCode -eq 0) {
+            Add-Content $env:GITHUB_STEP_SUMMARY "✅ No formatting issues found."
+          } else {
+            Add-Content $env:GITHUB_STEP_SUMMARY "⚠️ Formatting issues detected."
             Add-Content $env:GITHUB_STEP_SUMMARY ""
-            Add-Content $env:GITHUB_STEP_SUMMARY "- Issues found: **$count**"
-            Add-Content $env:GITHUB_STEP_SUMMARY "- Tool: Stylua 2.3.1"
-            Add-Content $env:GITHUB_STEP_SUMMARY ""
-            Add-Content $env:GITHUB_STEP_SUMMARY "_Job does not fail on formatting issues_"
+            Add-Content $env:GITHUB_STEP_SUMMARY "See \`stylua.log\` for details."
           }
 
       # ------------------------
@@ -72,8 +75,9 @@ jobs:
             --quiet ^
             --no-color ^
             1> junit.xml ^
-            2> luacheck.log ^
-            || exit /b 0"
+            2> luacheck.log"
+
+          exit 0
 
       # ------------------------
       # PUBLISH LUACHECK REPORT
@@ -89,4 +93,4 @@ jobs:
           include_empty_in_summary: true
           job_summary: true
           verbose_summary: true
-          check_annotations: true
+          check_annotations: false
