@@ -3,7 +3,8 @@ name: Lua Quality (FiveM / ESX)
 on:
   push:
     branches: [ "main", "dev" ]
-  pull_request_target:
+  pull_request:
+   branches: [ "*" ]
 
 permissions:
   contents: read
