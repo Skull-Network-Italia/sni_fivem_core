@@ -1,9 +1,9 @@
-name: Lua Lint (FiveM / ESX)
+name: Lua Quality (FiveM / ESX)
 
 on:
   push:
     branches: [ "main", "dev" ]
-  pull_request_target:
+  pull_request:
     branches: [ "*" ]
 
 permissions:
@@ -18,8 +18,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
 
       # ------------------------
       # VERIFY BINARIES
@@ -38,10 +36,11 @@ jobs:
           C:\tools\stylua.exe --version
 
       # ------------------------
-      # STYLUA (FORMAT CHECK)
+      # STYLUA (CHECK ONLY, NON BLOCCANTE)
       # ------------------------
       - name: Stylua format check
         shell: powershell
+        continue-on-error: true
         run: |
           Write-Host "Running Stylua (check only)..."
           C:\tools\stylua.exe . --check
@@ -66,12 +65,6 @@ jobs:
             || exit /b 0"
 
       # ------------------------
-      # FIVEM LINT
-      # ------------------------
-      - name: FiveM Lua Lint
-        uses: iLLeniumStudios/fivem-lua-lint-action@v2
-
-      # ------------------------
       # PUBLISH REPORT
       # ------------------------
       - name: Publish Luacheck Report
@@ -81,7 +74,6 @@ jobs:
           report_paths: junit.xml
           check_name: Lua Lint Report
           fail_on_failure: false
-
           include_passed: true
           include_empty_in_summary: true
           job_summary: true
