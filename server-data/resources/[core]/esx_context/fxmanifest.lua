@@ -4,21 +4,21 @@ game("gta5")
 author("ESX-Framework & Brayden")
 description("A simplistic context menu for ESX.")
 lua54("yes")
-version("1.0.0")
+version("1.0.1")
 
 ui_page("index.html")
 
 shared_script("@es_extended/imports.lua")
 
 client_scripts({
-    "config.lua",
-    "main.lua",
+  "config.lua",
+  "main.lua",
 })
 
 files({
-    "index.html",
+  "index.html",
 })
 
 dependencies({
-    "es_extended",
+  "es_extended",
 })

@@ -4,28 +4,28 @@ game("gta5")
 
 description("A banking system that adds interactable banks and ATMs")
 lua54("yes")
-version("1.0.0")
+version("1.0.1")
 
 shared_scripts({
-    "@es_extended/imports.lua",
-    "@es_extended/locale.lua",
-    "locales/*.lua",
-    "config.lua",
+  "@es_extended/imports.lua",
+  "@es_extended/locale.lua",
+  "locales/*.lua",
+  "config.lua",
 })
 
 server_scripts({
-    "@oxmysql/lib/MySQL.lua",
-    "server/main.lua",
+  "@oxmysql/lib/MySQL.lua",
+  "server/main.lua",
 })
 
 client_scripts({
-    "client/main.lua",
+  "client/main.lua",
 })
 
 ui_page("html/ui.html")
 
 files({
-    "html/**",
+  "html/**",
 })
 
 dependency("es_extended")

@@ -1,17 +1,17 @@
-version '1.0.0'
-author 'Skull Network Italia'
-description 'A ESX Stylised theme for the chat resource.'
+version("1.0.1")
+author("Skull Network Italia")
+description("A ESX Stylised theme for the chat resource.")
 
-file 'style.css'
-file 'shadow.js'
+file("style.css")
+file("shadow.js")
 
-chat_theme 'esx' {
-    styleSheet = 'style.css',
-    script = 'shadow.js',
-    msgTemplates = {
-        default = '<b>{0}</b><span>{1}</span>'
-    }
-}
+chat_theme("esx")({
+  styleSheet = "style.css",
+  script = "shadow.js",
+  msgTemplates = {
+    default = "<b>{0}</b><span>{1}</span>",
+  },
+})
 
-game 'common'
-fx_version 'adamant'
+game("common")
+fx_version("adamant")

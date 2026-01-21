@@ -4,7 +4,7 @@ game("gta5")
 author("Skull Network Italia")
 description("Allows Players to Store & Retrieve their vehicles")
 
-version("1.0.0")
+version("1.0.1")
 
 lua54("yes")
 

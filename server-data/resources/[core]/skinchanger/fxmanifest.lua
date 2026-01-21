@@ -2,12 +2,12 @@ fx_version("adamant")
 
 game("gta5")
 description("Saves/loads character appearances for ESX Legacy.")
-version("1.0.0")
+version("1.0.1")
 lua54("yes")
 
 client_scripts({
-    "@es_extended/locale.lua",
-    "locales/*.lua",
-    "config.lua",
-    "client/main.lua",
+  "@es_extended/locale.lua",
+  "locales/*.lua",
+  "config.lua",
+  "client/main.lua",
 })

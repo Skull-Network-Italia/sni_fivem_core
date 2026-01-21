@@ -2,7 +2,7 @@ fx_version("adamant")
 
 lua54("yes")
 game("gta5")
-version("1.0.0")
+version("1.0.1")
 author("Skull Network Italia")
 description("A beautiful and simple NUI notification system for ESX")
 
@@ -13,7 +13,7 @@ client_scripts({ "Config.lua", "Notify.lua" })
 ui_page("nui/index.html")
 
 files({
-    "nui/index.html",
-    "nui/js/*.js",
-    "nui/css/*.css",
+  "nui/index.html",
+  "nui/js/*.js",
+  "nui/css/*.css",
 })
