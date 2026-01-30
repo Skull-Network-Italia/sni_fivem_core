@@ -18,16 +18,16 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Check CLA acceptance (PowerShell)
-        shell: powershell
+            - name: Check CLA acceptance (PowerShell)
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           $ErrorActionPreference = "Stop"
 
-          # =====================================
+          # ================================
           # Configuration
-          # =====================================
+          # ================================
           $CLA_PHRASE = "I have read and agree to the CLA"
           $REPO       = "${{ github.repository }}"
           $PR_NUMBER  = "${{ github.event.pull_request.number }}"
@@ -37,80 +37,55 @@ jobs:
           Write-Host "PR Number : #$PR_NUMBER"
           Write-Host "Author    : $AUTHOR"
 
-          # =====================================
+          # ================================
           # GitHub API headers
-          # =====================================
+          # ================================
           $headers = @{
             Authorization = "Bearer $env:GITHUB_TOKEN"
             Accept        = "application/vnd.github+json"
             "User-Agent"  = "SNI-CLA-Check"
           }
 
-          # =====================================
-          # Fetch issue comments
-          # =====================================
-          Write-Host "Fetching issue comments..."
-          $comments = Invoke-RestMethod `
-            -Uri "https://api.github.com/repos/$REPO/issues/$PR_NUMBER/comments" `
-            -Headers $headers `
-            -Method Get
+          # ================================
+          # Fetch PR comments
+          # ================================
+          try {
+            $comments = Invoke-RestMethod `
+              -Uri "https://api.github.com/repos/$REPO/issues/$PR_NUMBER/comments" `
+              -Headers $headers `
+              -Method Get
+          }
+          catch {
+            Write-Error "Failed to fetch PR comments from GitHub API."
+            throw
+          }
 
+          # ================================
+          # Validate CLA acceptance
+          # ================================
           $accepted = $false
 
           foreach ($comment in $comments) {
-            if ($comment.body -match "(?i)$CLA_PHRASE") {
+            if ($comment.user.login -eq $AUTHOR -and
+                $comment.body -match [regex]::Escape($CLA_PHRASE)) {
               $accepted = $true
               break
             }
           }
 
-          # =====================================
-          # Fetch PR reviews (fallback)
-          # =====================================
           if (-not $accepted) {
-            Write-Host "Checking PR reviews..."
-            $reviews = Invoke-RestMethod `
-              -Uri "https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/reviews" `
-              -Headers $headers `
-              -Method Get
+            Write-Error @"
+           ❌ CLA NOT ACCEPTED
 
-            foreach ($review in $reviews) {
-              if ($review.body -and $review.body -match "(?i)$CLA_PHRASE") {
-                $accepted = $true
-                break
-              }
-            }
-          }
+           The contributor must comment the following EXACT sentence on this Pull Request:
 
-          # =====================================
-          # If NOT accepted → comment + fail
-          # =====================================
-          if (-not $accepted) {
+          I have read and agree to the CLA
 
-            Write-Host "CLA not accepted, posting bot comment..."
+CLA document:
+         https://github.com/$REPO/blob/main/CLA.md
 
-            $commentBody = @"
-          ❌ **Contributor License Agreement not accepted**
-
-          To proceed, please comment **exactly** the following sentence
-          on this Pull Request (comment or review):
-
-
-          📄 **CLA document**
-          https://github.com/$REPO/blob/main/CLA.md
-
-          Once the comment is added, this check will pass automatically.
-          "@
-
-            $payload = @{ body = $commentBody } | ConvertTo-Json
-
-            Invoke-RestMethod `
-              -Uri "https://api.github.com/repos/$REPO/issues/$PR_NUMBER/comments" `
-              -Headers $headers `
-              -Method Post `
-              -Body $payload
-
-            Write-Error "CLA not accepted"
+  Once the comment is added, this check will automatically pass.
+  "@
             exit 1
           }
 
