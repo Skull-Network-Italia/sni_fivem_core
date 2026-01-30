@@ -2,11 +2,13 @@ name: CLA Check
 
 on:
   pull_request_target:
-    types: [opened, edited, synchronize, reopened]
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
 
 permissions:
-  contents: read
-  checks: write
   pull-requests: write
   issues: write
 
@@ -14,118 +16,102 @@ jobs:
   cla-check:
     name: Contributor License Agreement
     runs-on: self-hosted
+
     steps:
-      - name: Run CLA Check (GitHub Check Run)
+      - name: Check CLA acceptance (PowerShell)
         shell: powershell
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           $ErrorActionPreference = "Stop"
 
+          # =====================================
           # Configuration
-          $CHECK_NAME = "Contributor License Agreement"
+          # =====================================
           $CLA_PHRASE = "I have read and agree to the CLA"
-          $BOT_MARKER = "<!-- cla-reminder -->"
+          $REPO       = "${{ github.repository }}"
+          $PR_NUMBER  = "${{ github.event.pull_request.number }}"
+          $AUTHOR     = "${{ github.event.pull_request.user.login }}"
 
-          $REPO = "${{ github.repository }}"
-          $OWNER, $REPO_NAME = $REPO -split "/"
-          $PR_NUMBER = "${{ github.event.pull_request.number }}"
-          $AUTHOR = "${{ github.event.pull_request.user.login }}"
-          $SHA = "${{ github.event.pull_request.head.sha }}"
+          Write-Host "Repository: $REPO"
+          Write-Host "PR Number : #$PR_NUMBER"
+          Write-Host "Author    : $AUTHOR"
 
-          # Headers
+          # =====================================
+          # GitHub API headers
+          # =====================================
           $headers = @{
             Authorization = "Bearer $env:GITHUB_TOKEN"
             Accept        = "application/vnd.github+json"
-            "User-Agent"  = "SNI-CLA-Check/1.0"
+            "User-Agent"  = "SNI-CLA-Check"
           }
 
-          # Create Check Run (in_progress)
-          $createPayload = @{
-            name     = $CHECK_NAME
-            head_sha = $SHA
-            status   = "in_progress"
-          } | ConvertTo-Json
-
-          $check = Invoke-RestMethod `
-            -Uri "https://api.github.com/repos/$OWNER/$REPO_NAME/check-runs" `
+          # =====================================
+          # Fetch issue comments
+          # =====================================
+          Write-Host "Fetching issue comments..."
+          $comments = Invoke-RestMethod `
+            -Uri "https://api.github.com/repos/$REPO/issues/$PR_NUMBER/comments" `
             -Headers $headers `
-            -Method Post `
-            -Body $createPayload
-
-          $CHECK_ID = $check.id
-
-          # Pagination helper
-          function Get-AllPages($url) {
-            $results = @()
-            $page = 1
-            do {
-              $resp = Invoke-RestMethod -Uri "$url?per_page=100&page=$page" -Headers $headers
-              $results += $resp
-              $page++
-            } while ($resp.Count -eq 100)
-            return $results
-          }
-
-          # Fetch comments & reviews
-          $comments = Get-AllPages "https://api.github.com/repos/$REPO/issues/$PR_NUMBER/comments"
-          $reviews  = Get-AllPages "https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/reviews"
+            -Method Get
 
           $accepted = $false
 
-          foreach ($item in $comments + $reviews) {
-            if ($item.body -and
-                $item.user.login -eq $AUTHOR -and
-                $item.body -match [regex]::Escape($CLA_PHRASE)) {
+          foreach ($comment in $comments) {
+            if ($comment.body -match "(?i)$CLA_PHRASE") {
               $accepted = $true
               break
             }
           }
 
-          # Prepare Check result
-          if ($accepted) {
-            $conclusion = "success"
-            $title = "CLA accepted"
-            $summary = "The contributor $AUTHOR has accepted the Contributor License Agreement.`n`nNo further action is required."
-          } else {
-            $conclusion = "failure"
-            $title = "CLA not accepted"
-            $summary = "The contributor $AUTHOR has not yet accepted the Contributor License Agreement.`n`nTo proceed, comment the following sentence on this Pull Request:`n`n$CLA_PHRASE`n`nCLA document:`nhttps://github.com/$REPO/blob/main/CLA.md"
+          # =====================================
+          # Fetch PR reviews (fallback)
+          # =====================================
+          if (-not $accepted) {
+            Write-Host "Checking PR reviews..."
+            $reviews = Invoke-RestMethod `
+              -Uri "https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/reviews" `
+              -Headers $headers `
+              -Method Get
+
+            foreach ($review in $reviews) {
+              if ($review.body -and $review.body -match "(?i)$CLA_PHRASE") {
+                $accepted = $true
+                break
+              }
+            }
           }
 
-          # Update Check Run (completed)
-          $updatePayload = @{
-            status     = "completed"
-            conclusion = $conclusion
-            output     = @{
-              title   = $title
-              summary = $summary
-            }
-          } | ConvertTo-Json -Depth 5
-
-          Invoke-RestMethod `
-            -Uri "https://api.github.com/repos/$OWNER/$REPO_NAME/check-runs/$CHECK_ID" `
-            -Headers $headers `
-            -Method Patch `
-            -Body $updatePayload
-
-          # Post reminder comment if needed (only once)
+          # =====================================
+          # If NOT accepted → comment + fail
+          # =====================================
           if (-not $accepted) {
-            $existingReminder = $comments | Where-Object {
-              $_.body -and $_.body -match [regex]::Escape($BOT_MARKER)
-            }
 
-            if (-not $existingReminder) {
-              $commentBody = "$BOT_MARKER`nThis Pull Request cannot be merged yet because the Contributor License Agreement has not been accepted.`n`nPlease comment the following sentence to proceed:`n`n$CLA_PHRASE`n`nCLA document:`nhttps://github.com/$REPO/blob/main/CLA.md"
+            Write-Host "CLA not accepted, posting bot comment..."
 
-              $payload = @{ body = $commentBody } | ConvertTo-Json
+            $commentBody = @"
+          ❌ **Contributor License Agreement not accepted**
 
-              Invoke-RestMethod `
-                -Uri "https://api.github.com/repos/$REPO/issues/$PR_NUMBER/comments" `
-                -Headers $headers `
-                -Method Post `
-                -Body $payload
-            }
+          To proceed, please comment **exactly** the following sentence
+          on this Pull Request (comment or review):
+
+
+          📄 **CLA document**
+          https://github.com/$REPO/blob/main/CLA.md
+
+          Once the comment is added, this check will pass automatically.
+          "@
+
+            $payload = @{ body = $commentBody } | ConvertTo-Json
+
+            Invoke-RestMethod `
+              -Uri "https://api.github.com/repos/$REPO/issues/$PR_NUMBER/comments" `
+              -Headers $headers `
+              -Method Post `
+              -Body $payload
 
             Write-Error "CLA not accepted"
+            exit 1
           }
+
+          Write-Host "✅ CLA accepted"
