@@ -18,7 +18,6 @@ Locales["sr"] = {
     ["return_provider_menu"] = "AutoSalon - Vrati vozilo",
     ["rental_amount"] = "Iznos Rente",
     ["sell_menu"] = "Pritisni [E] da prodaš tvoj %s za $%s",
-    ["set_vehicle_owner_rent"] = "Iznajmi vozilo",
     ["shop_menu"] = "Pritisni [E] da pristupiš meniju",
     ["generic_shopitem"] = "$%s",
     ["vehicle_dealer"] = "Vozilo - AutoSalon",

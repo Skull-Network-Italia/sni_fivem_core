@@ -18,7 +18,6 @@ Locales["en"] = {
     ["return_provider_menu"] = "car Dealer - Return vehicle to provider",
     ["rental_amount"] = "rental amount",
     ["sell_menu"] = "press [E] to sell your %s for $%s",
-    ["set_vehicle_owner_rent"] = "rent vehicle",
     ["shop_menu"] = "press [E] to access the menu",
     ["generic_shopitem"] = "$%s",
     ["vehicle_dealer"] = "vehicle - Car Dealer",

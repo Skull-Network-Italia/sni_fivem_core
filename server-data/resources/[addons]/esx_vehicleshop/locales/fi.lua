@@ -18,7 +18,6 @@ Locales["fi"] = {
     ["return_provider_menu"] = "Ajoneuvoliike - Palauta ajoneuvo palveluntarjoajalle",
     ["rental_amount"] = "Vuokran summa",
     ["sell_menu"] = "Paina [E] myydäksesi %s hintaan: $%s",
-    ["set_vehicle_owner_rent"] = "Määritä ajoneuvon vuokra",
     ["shop_menu"] = "Paina [E] avataksesi valikko",
     ["generic_shopitem"] = "$%s",
     ["vehicle_dealer"] = "Ajoneuvo - Ajoneuvoliike",

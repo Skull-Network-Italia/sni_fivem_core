@@ -4,7 +4,7 @@ local CurrentActionData, Vehicles, Categories = {}, {}, {}
 local VehiclesByModel = {}
 local vehiclesByCategory = {}
 
-function getVehicleFromModel(model)
+function GetVehicleFromModel(model)
     return VehiclesByModel[model]
 end
 
@@ -76,7 +76,7 @@ function ReturnVehicleProvider()
 
         for k, v in ipairs(vehicles) do
             local returnPrice = ESX.Math.Round(v.price * 0.75)
-            local vehicleLabel = getVehicleFromModel(v.vehicle).name
+            local vehicleLabel = GetVehicleFromModel(v.vehicle).name
 
             table.insert(elements, {
                 label = ('%s [<span style="color:orange;">%s</span>]'):format(vehicleLabel, TranslateCap("generic_shopitem", ESX.Math.GroupDigits(returnPrice))),
@@ -190,7 +190,7 @@ function OpenShopMenu()
 
                             local playerPed = PlayerPedId()
                             FreezeEntityPosition(playerPed, false)
-                            SetEntityVisible(playerPed, true)
+                            SetEntityVisible(PlayerPedId(), false, false)
                             SetEntityCoords(playerPed, Config.Zones.ShopEntering.Pos)
 
                             menu2.close()
@@ -284,7 +284,7 @@ function OpenPopVehicleMenu()
         local elements = {}
 
         for k, v in ipairs(vehicles) do
-            local vehicleLabel = getVehicleFromModel(v.vehicle).name
+            local vehicleLabel = GetVehicleFromModel(v.vehicle).name
 
             table.insert(elements, {
                 label = ('%s [<span style="color:green;">%s</span>]'):format(vehicleLabel, TranslateCap("generic_shopitem", ESX.Math.GroupDigits(v.price))),
@@ -321,7 +321,7 @@ function OpenRentedVehiclesMenu()
         local elements = {}
 
         for k, v in ipairs(vehicles) do
-            local vehicleLabel = getVehicleFromModel(v.name).name
+            local vehicleLabel = GetVehicleFromModel(v.name).name
 
             table.insert(elements, {
                 label = ('%s: %s - <span style="color:orange;">%s</span>'):format(v.playerName, vehicleLabel, v.plate),
@@ -346,7 +346,7 @@ function OpenRentedVehiclesMenu()
     end)
 end
 
-function hasEnteredMarker(zone)
+function HasEnteredMarker(zone)
     if zone == "ShopEntering" then
         if not Config.EnablePlayerManagement then
             CurrentAction = "shop_menu"
@@ -406,7 +406,7 @@ function hasEnteredMarker(zone)
     end
 end
 
-function hasExitedMarker(zone)
+function HasExitedMarker(zone)
     if not IsInShopMenu then
         ESX.UI.Menu.CloseAll()
     end
@@ -485,12 +485,12 @@ CreateThread(function()
         if (isInMarker and not HasAlreadyEnteredMarker) or (isInMarker and LastZone ~= currentZone) then
             HasAlreadyEnteredMarker, LastZone = true, currentZone
             LastZone = currentZone
-            hasEnteredMarker(currentZone)
+            HasEnteredMarker(currentZone)
         end
 
         if not isInMarker and HasAlreadyEnteredMarker then
             HasAlreadyEnteredMarker = false
-            hasExitedMarker(LastZone)
+            HasExitedMarker(LastZone)
         end
 
         if letSleep then

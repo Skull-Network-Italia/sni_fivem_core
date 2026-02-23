@@ -18,7 +18,6 @@ Locales["it"] = {
     ["return_provider_menu"] = "Concessionaria auto - Restituzione al venditore",
     ["rental_amount"] = "Importo dell affitto",
     ["sell_menu"] = "Premi [E] per vendere le tue %s a $%s",
-    ["set_vehicle_owner_rent"] = "Noleggia un veicolo",
     ["shop_menu"] = "Premere [E] per accedere al menu",
     ["generic_shopitem"] = "$%s",
     ["vehicle_dealer"] = "Veicolo - Concessionario auto",

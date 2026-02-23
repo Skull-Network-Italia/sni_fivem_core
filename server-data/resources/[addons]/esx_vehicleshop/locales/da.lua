@@ -18,7 +18,6 @@ Locales["da"] = {
     ["return_provider_menu"] = "bilforhandler - Returner køretøjet til udbyderen",
     ["rental_amount"] = "leje mængde",
     ["sell_menu"] = "tryk på [E] for at sælge din %s for DKK%s",
-    ["set_vehicle_owner_rent"] = "lej bil",
     ["shop_menu"] = "tryk [E] for at tilgå menuen",
     ["generic_shopitem"] = "DKK%s",
     ["vehicle_dealer"] = "bil - bilforhandler",

@@ -2,10 +2,6 @@ INSERT INTO `addon_account` (name, label, shared) VALUES
 	('society_cardealer','Sprzedawca aut',1)
 ;
 
-INSERT INTO `addon_inventory` (name, label, shared) VALUES
-	('society_cardealer','Sprzedawca aut',1)
-;
-
 INSERT INTO `jobs` (name, label) VALUES
 	('cardealer','Sprzedawca aut')
 ;

@@ -18,7 +18,6 @@ Locales["zh-cn"] = {
     ["return_provider_menu"] = "汽车经销商 - 将车辆返回给供应商",
     ["rental_amount"] = "租金金额",
     ["sell_menu"] = "键下 [E] 出售载具 %s - $%s",
-    ["set_vehicle_owner_rent"] = "设为租用",
     ["shop_menu"] = "键下 [E] 访问选单",
     ["generic_shopitem"] = "$%s",
     ["vehicle_dealer"] = "载具 - 汽车经销商",
