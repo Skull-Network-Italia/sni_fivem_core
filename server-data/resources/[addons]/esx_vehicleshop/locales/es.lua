@@ -18,7 +18,6 @@ Locales["es"] = {
     ["return_provider_menu"] = "Vendedor de autos - Devolver a proveedor",
     ["rental_amount"] = "Cantidad de renta",
     ["sell_menu"] = "Presiona [E] para vender tu %s por $%s",
-    ["set_vehicle_owner_rent"] = "Alquilar vehiculo",
     ["shop_menu"] = "Presiona [E] para entrar al menu",
     ["generic_shopitem"] = "$%s",
     ["vehicle_dealer"] = "Vehiculo - Vendedor de autos",

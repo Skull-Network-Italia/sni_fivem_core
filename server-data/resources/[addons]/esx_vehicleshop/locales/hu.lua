@@ -21,7 +21,6 @@ Locales["hu"] = {
     ["return_provider_menu"] = "Autókereskedö - Jámrü vissza adás a szollgáltatónak",
     ["rental_amount"] = "bérlési költség",
     ["sell_menu"] = "nyomj [E] gombot hogy eladd a %s ennyiért %s $",
-    ["set_vehicle_owner_rent"] = "jármü kijelölése [Location]",
     ["set_vehicle_owner_sell_society"] = "jármü kijelölése [Sale] [Society]",
     ["shop_menu"] = "nyomj [E] gombot a vásárláshoz",
     ["generic_shopitem"] = "%s $",

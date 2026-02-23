@@ -18,7 +18,6 @@ Locales["fr"] = {
     ["return_provider_menu"] = "concessionnaire - Retour de véhicule",
     ["rental_amount"] = "montant de la location",
     ["sell_menu"] = "appuyez sur [E] pour vendre %s au prix de $%s",
-    ["set_vehicle_owner_rent"] = "attribuer véhicule [Location]",
     ["shop_menu"] = "appuyez sur [E] pour accéder au menu",
     ["generic_shopitem"] = "$%s",
     ["vehicle_dealer"] = "concessionnaire - Véhicules",

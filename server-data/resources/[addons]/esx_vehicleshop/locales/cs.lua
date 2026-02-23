@@ -18,7 +18,6 @@ Locales["cs"] = {
     ["return_provider_menu"] = "autosalon - Vratit vozidlo zprostredkovateli",
     ["rental_amount"] = "cena pujceni",
     ["sell_menu"] = "stiskni [E] pro prodani %s za $%s",
-    ["set_vehicle_owner_rent"] = "pujcit vozidlo",
     ["shop_menu"] = "stiskni [E] pro přístup do menu",
     ["generic_shopitem"] = "$%s",
     ["vehicle_dealer"] = "vozidlo - Prodejce aut",

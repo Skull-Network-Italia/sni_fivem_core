@@ -18,7 +18,6 @@ Locales["nl"] = {
     ["return_provider_menu"] = "Auto verkoop - Breng voertuig terug",
     ["rental_amount"] = "huur bedrag",
     ["sell_menu"] = "klik op [E] om %s te verkopen voor €%s",
-    ["set_vehicle_owner_rent"] = "verhuur voertuig",
     ["shop_menu"] = "klik op [E] om het menu te gebruiken",
     ["generic_shopitem"] = "€%s",
     ["vehicle_dealer"] = "voertuig - Auto verkoop",

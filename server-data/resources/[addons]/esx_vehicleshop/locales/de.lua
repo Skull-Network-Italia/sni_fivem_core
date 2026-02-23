@@ -18,7 +18,6 @@ Locales["de"] = {
     ["return_provider_menu"] = "Autohändler - Fahrzeug zum Händler bringen",
     ["rental_amount"] = "Mietpreis",
     ["sell_menu"] = "Drücke [E] um dein %s für %sEUR zu verkaufen!",
-    ["set_vehicle_owner_rent"] = "Fahrzeug Mieten",
     ["shop_menu"] = "Drücke [E] um auf das Menü zuzugreifen.",
     ["generic_shopitem"] = "%sEUR",
     ["vehicle_dealer"] = "Fahrzeug - Autohändler",

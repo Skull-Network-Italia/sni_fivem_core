@@ -18,7 +18,6 @@ Locales["pl"] = {
     ["return_provider_menu"] = "car Dealer - Return vehicle to provider",
     ["rental_amount"] = "suma wynajęcia",
     ["sell_menu"] = "wcisnij [E] aby sprzedać %s za $%s",
-    ["set_vehicle_owner_rent"] = "zarejestruj pojazd [Wynajem]",
     ["shop_menu"] = "wcisnij [E] aby wejść do menu",
     ["generic_shopitem"] = "$%s",
     ["vehicle_dealer"] = "pojazdy - Sprzedawca aut",

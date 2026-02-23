@@ -38,7 +38,7 @@ function SQLVehiclesAndCategories()
     TriggerClientEvent("esx_vehicleshop:updateVehiclesAndCategories", -1, vehicles, categories, vehiclesByModel)
 end
 
-function getVehicleFromModel(model)
+function GetVehicleFromModel(model)
     return vehiclesByModel[model]
 end
 
@@ -101,7 +101,7 @@ end)
 
 ESX.RegisterServerCallback("esx_vehicleshop:buyVehicle", function(source, cb, model, plate)
     local xPlayer = ESX.Player(source)
-    local modelPrice = getVehicleFromModel(model).price
+    local modelPrice = GetVehicleFromModel(model).price
 
     if modelPrice and xPlayer.getMoney() >= modelPrice then
         xPlayer.removeMoney(modelPrice, "Vehicle Purchase")
@@ -133,7 +133,7 @@ ESX.RegisterServerCallback("esx_vehicleshop:buyCarDealerVehicle", function(sourc
     if xPlayer.getJob().name ~= "cardealer" then
         return cb(false)
     end
-    local modelPrice = getVehicleFromModel(model).price
+    local modelPrice = GetVehicleFromModel(model).price
 
     if not modelPrice then
         return cb(false)
@@ -171,7 +171,7 @@ AddEventHandler("esx_vehicleshop:returnProvider", function(vehicleModel)
             end
             TriggerEvent("esx_addonaccount:getSharedAccount", "society_cardealer", function(account)
                 local price = ESX.Math.Round(result.price * 0.75)
-                local vehicleLabel = getVehicleFromModel(vehicleModel).name
+                local vehicleLabel = GetVehicleFromModel(vehicleModel).name
 
                 account.addMoney(price)
                 xPlayer.showNotification(TranslateCap("vehicle_sold_for", vehicleLabel, ESX.Math.GroupDigits(price)))
@@ -253,19 +253,6 @@ ESX.RegisterServerCallback("esx_vehicleshop:resellVehicle", function(source, cb,
             end)
         end)
     end
-end)
-
-ESX.RegisterServerCallback("esx_vehicleshop:getStockItems", function(source, cb)
-    TriggerEvent("esx_addoninventory:getSharedInventory", "society_cardealer", function(inventory)
-        cb(inventory.items)
-    end)
-end)
-
-ESX.RegisterServerCallback("esx_vehicleshop:getPlayerInventory", function(source, cb)
-    local xPlayer = ESX.Player(source)
-    local items = xPlayer.getInventory(true)
-
-    cb({ items = items })
 end)
 
 ESX.RegisterServerCallback("esx_vehicleshop:isPlateTaken", function(source, cb, plate)
