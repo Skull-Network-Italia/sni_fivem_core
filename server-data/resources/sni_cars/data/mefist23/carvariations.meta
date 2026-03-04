@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CVehicleModelInfoVariation>
+  <variationData>
+    <Item>
+      <modelName>mefist23</modelName>
+      <colors>
+        <Item> 							<!-- Black -->
+          <indices content="char_array">
+            0
+          </indices>
+        </Item>
+        <Item> 							<!-- Black -->
+          <indices content="char_array">
+            0
+          </indices>
+        </Item>
+        <Item> 							<!-- Red -->
+          <indices content="char_array">
+            28
+          </indices>
+        </Item>
+      </colors>
+      <kits>
+        <Item>0_default_modkit</Item>
+      </kits>
+      <windowsWithExposedEdges />
+      <plateProbabilities>
+        <Probabilities>
+          <Item>
+            <Name>Yellow Plate</Name>
+            <Value value="100" />
+          </Item>
+        </Probabilities>
+      </plateProbabilities>
+      <lightSettings value="2" />
+      <sirenSettings value="0" />
+    </Item>
+  </variationData>
+</CVehicleModelInfoVariation>

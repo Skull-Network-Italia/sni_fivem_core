@@ -1,0 +1,40 @@
+Batmobile 1966 BETA
+
+Credits
+
+Rocksteadys model from arkham knight 
+
+Model extracted into XNALARA by CapLagRobin http://caplagrobin.deviantart.com/art/XNALARA-BATMAN-ARKHAM-KNIGHT-BATMOBILE-1960s-569030524
+
+
+Installation 
+
+Use Open Iv to put 
+
+ADD All 3 bm66 files to C:\Games\Grand Theft Auto V\x64w.rpf\dlcpacks\mpbusiness2\dlc.rpf\x64\levels\gta5\vehicles\mpb2vehicles.rpf\
+
+
+NOW GO TO THE UPDATE RPF
+
+ADD carvarriations.meta  
+AND  
+ADD handling.meta to C:\Games\Grand Theft Auto V\update\update.rpf\dlc_patch\mpbusiness2\common\data
+
+
+REPLACE vehicles.meta C:\Games\Grand Theft Auto V\update\update.rpf\dlc_patch\mpbusiness2\common\data\levels\gta5
+
+Some Bugs to fix with textures, 
+
+im trying to find out how to make mesh see through i have it see through in the modeler but ingame it is not.
+
+and also looking into why the red siren glass is invisible ingame
+
+
+
+
+
+
+
+
+
+
