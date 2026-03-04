@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <indices content="char_array" >  -->
+	<!-- [PAINT:1] - Primary Color -->
+	<!-- [PAINT:2] - Secondary Color-->
+	<!-- [PAINT:3] - Pearlescent Color -->
+	<!-- [PAINT:4] - Wheel/Rim Color -->
+	<!-- [PAINT:5] - Benny?s Interior Trim Color -->
+	<!-- [PAINT:6] - Benny?s Dashboard Color -->
+<!-- </indices> -->
+<CVehicleModelInfoVariation>
+	<variationData>
+		<Item>
+		<modelName>vwgolf4r322002wb</modelName>
+		<colors>
+		<Item>
+		<indices content="char_array" > 
+			0
+			64
+			0
+			0
+			64
+			0
+		</indices>
+		<liveries>
+			<Item value="false" />
+			<Item value="false" />
+			<Item value="false" />
+			<Item value="false" />
+			<Item value="false" />
+			<Item value="false" />
+			<Item value="false" />
+			<Item value="false" />
+		</liveries>
+		</Item>
+		</colors>
+		<kits>
+		<Item>0_default_modkit</Item>
+		</kits>
+		<windowsWithExposedEdges />
+		<plateProbabilities>
+		<Probabilities>
+			<Item>
+				<Name>Standard White</Name>
+				<Value value="20" />
+			</Item>
+			<Item>
+				<Name>White Plate 2</Name>
+				<Value value="20" />
+			</Item>
+			<Item>
+				<Name>Blue Plate</Name>
+				<Value value="20" />
+			</Item>
+			<Item>
+				<Name>Yellow Plate</Name>
+				<Value value="20" />
+			</Item>
+			<Item>
+				<Name>yankton plate</Name>
+				<Value value="20" />
+			</Item>
+			</Probabilities>
+		</plateProbabilities>
+		<lightSettings value="1" />
+		<sirenSettings value="0" />
+		</Item>
+	</variationData>
+</CVehicleModelInfoVariation>
